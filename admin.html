@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <!-- ✅ Navigation Bar -->
+    <nav>
+        <button onclick="showSection('menu-management')">Menu Management</button>
+        <button onclick="showSection('staff-management')">Staff Management</button>
+        <button id="logout-btn" class="logout-btn">Logout</button>
+    </nav>
+
+    <!-- ✅ Menu Management Section -->
+    <section id="menu-management" class="content-section">
+        <h2>Menu Management</h2>
+        <input type="text" id="menu-item-name" placeholder="Item Name">
+        <input type="number" id="menu-item-price" placeholder="Price">
+        
+        <select id="menu-item-category">
+            <option value="" disabled selected>Select Category</option>
+            <option value="Starters">Starters</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Desserts">Desserts</option>
+            <option value="Beverages">Beverages</option>
+        </select>
+
+        <button id="add-menu-item">Add Item</button>
+
+        <table id="menu-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Availability</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="menu-list"></tbody>
+        </table>
+    </section>
+
+    <!-- ✅ Staff Management Section -->
+    <section id="staff-management" class="content-section hidden">
+        <h2>Staff Management</h2>
+        <input type="email" id="staff-email" placeholder="Staff Email" required>
+<input type="password" id="staff-password" placeholder="Staff Password" required> <!-- Add this -->
+<select id="staff-role">
+    <option value="" disabled selected>Select Role</option>
+    <option value="chef">Chef</option>
+    <option value="delivery">Delivery</option>
+</select>
+<input type="text" id="staff-name" placeholder="Staff Name" required> <!-- Ensure this exists -->
+<button id="add-staff-btn">Add Staff</button>
+
+
+        <table id="staff-table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="staff-list"></tbody>
+        </table>
+    </section>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

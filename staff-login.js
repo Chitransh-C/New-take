@@ -2,14 +2,38 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-auth.js";
 
-// ✅ Firebase Initialization
-import { firebaseConfig } from "./firebase-config.js";
+let auth = null;
+let db = null;
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+// Function to Fetch Firebase Config from Backend
+async function getFirebaseConfig() {
+    try {
+        const response = await fetch("/api/getFirebaseConfig");
+        if (!response.ok) {
+            throw new Error("Failed to fetch Firebase configuration");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching Firebase config:", error);
+        return null;
+    }
+}
 
-// ✅ Handle Login
+// Initialize Firebase dynamically
+document.addEventListener("DOMContentLoaded", async () => {
+    const firebaseConfig = await getFirebaseConfig();
+    if (!firebaseConfig) {
+        alert("Failed to load Firebase. Please try again later.");
+        return;
+    }
+
+    const app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    console.log("✅ Firebase initialized securely.");
+});
+
+// Handle Login
 document.getElementById("login-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -17,10 +41,12 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value.trim();
 
     try {
-        // ✅ Step 1: Authenticate User with Firebase Authentication
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        if (!auth || !db) {
+            alert("Firebase not initialized. Please try again later.");
+            return;
+        }
 
-        // ✅ Step 2: Fetch Staff Role from Firestore
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const staffQuery = query(collection(db, "staff"), where("email", "==", email));
         const querySnapshot = await getDocs(staffQuery);
 
@@ -28,7 +54,6 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
             const staffDoc = querySnapshot.docs[0];
             const staffData = staffDoc.data();
 
-            // ✅ Step 3: Redirect Based on Role
             const role = staffData.role;
             if (role === "admin") {
                 window.location.href = "admin.html";
