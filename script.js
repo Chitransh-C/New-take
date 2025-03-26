@@ -359,7 +359,7 @@ const menuCollection = collection(db, "menu");
         menuSnapshot.forEach(doc => {
             console.log(doc.id, " => ", doc.data());
         });
-    } catch (error) {
+     catch (error) {
         console.error("Firestore Connection Failed: ", error);
         alert("Firestore Connection Failed. Check console for details.");
     }
