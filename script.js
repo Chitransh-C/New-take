@@ -76,6 +76,7 @@ async function loadMenu() {
     console.error("Firestore is not initialized.");
     return;
 }
+
 const menuCollection = collection(db, "menu");
 
         const menuSnapshot = await getDocs(menuCollection);
@@ -350,7 +351,7 @@ await sendOrderConfirmation(orderId, customerPhone);
 }
 
 // ✅ Test Firestore Connection
-
+try{
 const menuCollection = collection(db, "menu");
 
         const menuSnapshot = await getDocs(menuCollection);
@@ -359,7 +360,7 @@ const menuCollection = collection(db, "menu");
         menuSnapshot.forEach(doc => {
             console.log(doc.id, " => ", doc.data());
         });
-     catch (error) {
+    } catch (error) {
         console.error("Firestore Connection Failed: ", error);
         alert("Firestore Connection Failed. Check console for details.");
     }
