@@ -5,44 +5,61 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebas
 import { getFirestore, collection, getDocs, addDoc, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
 // ✅ Firebase Configuration
-import { firebaseConfig } from "./firebase-config.js";
+let db = null; // ✅ Firebase will be initialized dynamically
 
+document.addEventListener("DOMContentLoaded", async () => {
+    const firebaseConfig = await getFirebaseConfig();
+    if (!firebaseConfig) {
+        alert("Failed to load Firebase. Please try again later.");
+        return;
+    }
 
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    console.log("✅ Firebase initialized securely.");
 
-// ✅ Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// ✅ Make Firestore accessible globally
-window.db = db;
-window.collection = collection;
-window.addDoc = addDoc;
-window.serverTimestamp = serverTimestamp;
-window.doc = doc;
-window.getDoc = getDoc;
-window.setDoc = setDoc;
-
-
-// ✅ Attach Event Listeners to Category Buttons
-document.addEventListener("DOMContentLoaded", function () {
+    // ✅ Call functions that use Firestore only after it's initialized
     loadMenu();
     updateCartUI();
 
-    // ✅ Attach Event Listener to Checkout Button
+    // ✅ Attach Event Listeners after Firebase is ready
     let checkoutBtn = document.getElementById("checkoutBtn");
     checkoutBtn.addEventListener("click", function() {
-        checkout(); // ✅ Call checkout() on button click
+        checkout();
     });
 
-    // ✅ Attach Event Listeners to Category Buttons
     let categoryButtons = document.querySelectorAll("#categoryNav button");
     categoryButtons.forEach(button => {
         button.addEventListener("click", function() {
             let category = button.textContent;
-            filterMenu(category); // ✅ Call filterMenu() with category
+            filterMenu(category);
         });
     });
 });
+
+
+// ✅ Function to Fetch Firebase Config from Backend
+async function getFirebaseConfig() {
+    try {
+        const response = await fetch("/api/getFirebaseConfig");
+        if (!response.ok) {
+            throw new Error("Failed to fetch Firebase configuration");
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error fetching Firebase config:", error);
+        return null;
+    }
+}
+
+
+
+
+
+
+
+
+// ✅ Attach Event Listeners to Category Buttons
 
 
 // ✅ Load Menu Items (You can modify this to fetch from Firestore if needed)
@@ -55,7 +72,12 @@ async function loadMenu() {
 
     try {
         // ✅ Fetch menu items from Firestore collection 'menu'
-        const menuCollection = collection(window.db, "menu");
+        if (!db) {
+    console.error("Firestore is not initialized.");
+    return;
+}
+const menuCollection = collection(db, "menu");
+
         const menuSnapshot = await getDocs(menuCollection);
 
         // ✅ Loop through each document in the collection
@@ -280,7 +302,12 @@ async function checkout() {
 
     try {
         // ✅ Check Firestore for last used number today
-        const orderCounterRef = doc(window.db, "orderCounters", `${month}${date}${year}`);
+        if (!db) {
+    alert("Firestore is not initialized. Please try again later.");
+    return;
+}
+const orderCounterRef = doc(db, "orderCounters", `${month}${date}${year}`);
+
         const orderCounterSnap = await getDoc(orderCounterRef);
         let lastNumber = orderCounterSnap.exists() ? orderCounterSnap.data().lastUsedNumber : 1000;
 
@@ -292,7 +319,7 @@ async function checkout() {
         await setDoc(orderCounterRef, { lastUsedNumber: uniqueNumber });
 
         // ✅ Save order to Firestore with custom Order ID
-        await addDoc(collection(window.db, "orders"), {
+        await addDoc(collection(db, "orders"), {
             orderId: orderId,
             customer: customerName || "Guest",
             phone: customerPhone,
@@ -324,7 +351,12 @@ await sendOrderConfirmation(orderId, customerPhone);
 // ✅ Test Firestore Connection
 async function testFirestoreConnection() {
     try {
-        const menuCollection = collection(window.db, "menu");
+        if (!db) {
+    console.error("Firestore is not initialized.");
+    return;
+}
+const menuCollection = collection(db, "menu");
+
         const menuSnapshot = await getDocs(menuCollection);
         console.log("Firestore Connection Successful.");
 
