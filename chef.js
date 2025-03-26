@@ -76,7 +76,8 @@ async function updateOrderStatus(orderId, newStatus) {
         const response = await fetch('/api/updateOrder', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ orderId, status: newStatus })
+          body: JSON.stringify({ orderId, status, customerPhone })
+
         });
 
         const result = await response.json();

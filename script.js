@@ -276,6 +276,7 @@ function updateCartUI() {
     // Update Total
     cartTotal.textContent = total.toFixed(2);
 }
+window.checkout = checkout;
 
 // ✅ Checkout (Saves Order to Firestore)
 async function checkout() {
@@ -349,12 +350,7 @@ await sendOrderConfirmation(orderId, customerPhone);
 }
 
 // ✅ Test Firestore Connection
-async function testFirestoreConnection() {
-    try {
-        if (!db) {
-    console.error("Firestore is not initialized.");
-    return;
-}
+
 const menuCollection = collection(db, "menu");
 
         const menuSnapshot = await getDocs(menuCollection);
@@ -368,7 +364,7 @@ const menuCollection = collection(db, "menu");
         alert("Firestore Connection Failed. Check console for details.");
     }
 }
-testFirestoreConnection();
+
 
 // ✅ Send WhatsApp Confirmation After Order is Placed
 // ✅ Send WhatsApp Confirmation After Order is Placed
