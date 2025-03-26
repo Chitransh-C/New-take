@@ -1,0 +1,147 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #fff8e1; /* Light warm yellow */
+    margin: 0;
+    padding: 0;
+}
+
+/* Header with Logout */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: #d32f2f; /* Bright Red */
+    color: white;
+}
+
+#logout-btn {
+    background: white;
+    color: #d32f2f;
+    border: none;
+    padding: 5px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+#logout-btn:hover {
+    background: #fbe9e7;
+}
+
+/* Navigation Bar */
+nav {
+    background: #ffb300; /* Bright Yellow */
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+nav ul li a:hover {
+    background: #ff8f00; /* Darker Orange */
+}
+
+/* Order Sections */
+.section {
+    display: none; /* Initially hidden */
+    padding: 20px;
+}
+#new-orders { display: block; }
+
+.section {
+    background: white;
+    padding: 15px;
+    width: 80%;
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #d32f2f; /* Red */
+}
+
+/* Order Styling */
+.order {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    text-align: left;
+}
+
+button {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: background 0.3s;
+}
+
+.cooking-btn {
+    background-color: orange;
+}
+
+.cooking-btn:hover {
+    background-color: darkorange;
+}
+
+.ready-btn {
+    background-color: green;
+}
+
+.ready-btn:hover {
+    background-color: darkgreen;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    nav ul {
+        flex-direction: column;
+        text-align: center;
+    }
+    nav ul li {
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .header {
+        flex-direction: column;
+    }
+
+    #logout-btn {
+        margin-top: 10px;
+        font-size: 12px;
+    }
+}

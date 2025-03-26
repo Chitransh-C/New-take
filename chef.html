@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Dashboard</title>
+    
+    <link rel="stylesheet" href="chef.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Chef Dashboard</h1>
+        <button id="logout-btn">Logout</button>
+    </div>
+
+   <!-- Navigation Bar -->
+<nav>
+    <ul>
+        <li><a href="#" onclick="showSection('new-orders')">New Orders</a></li>
+        <li><a href="#" onclick="showSection('cooking-orders')">Cooking</a></li>
+        <li><a href="#" onclick="showSection('ready-orders')">Ready</a></li>
+    </ul>
+</nav>
+
+
+    <!-- Order Sections -->
+    <div class="sections">
+        <div class="section" id="new-orders">
+            <h2>New Orders</h2>
+            <div id="new-orders-list"></div>
+        </div>
+        <div class="section" id="cooking-orders">
+            <h2>Cooking</h2>
+            <div id="cooking-orders-list"></div>
+        </div>
+        <div class="section" id="ready-orders">
+            <h2>Ready</h2>
+            <div id="ready-orders-list"></div>
+        </div>
+    </div>
+    <script type="module"  src="chef.js"></script>
+</body>
+</html>
