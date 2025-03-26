@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
-    const app = initializeApp(firebaseConfig);
+    app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
     console.log("✅ Firebase initialized securely.");
