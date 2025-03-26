@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDC Takeaway</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>GDC Takeaway</h1>
+        <button onclick="window.location.href='staff-login.html'" class="staff-login-btn">Staff Login</button>
+
+        <nav>
+            <ul id="categoryNav">
+                <li><button onclick="filterMenu('All')">All</button></li>
+                <li><button onclick="filterMenu('Starters')">Starters</button></li>
+                <li><button onclick="filterMenu('Main Course')">Main Course</button></li>
+                <li><button onclick="filterMenu('Desserts')">Desserts</button></li>
+                <li><button onclick="filterMenu('Beverages')">Beverages</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        
+        <div id="whatsapp-notice" style="background: #e0ffe0; padding: 10px; border: 1px solid #8bc34a; margin-bottom: 15px;">
+    <strong>New Customers:</strong> To receive order status updates on WhatsApp, please send "<code>join shall-stranger</code>" to <a href="https://wa.me/14155238886?text=join%20shall-stranger" target="_blank">+1 415 523 8886</a>.
+</div>
+        
+        
+        <section id="menu">
+            <!-- Menu items will be loaded here using JavaScript -->
+            
+        </section>
+
+
+        <div id="cart">
+            <h2>Your Cart</h2>
+            <ul id="cartItems"></ul>
+            <div class="cart-total">
+                <p><strong>Total:</strong> ₹<span id="cartTotal">0</span></p>
+
+                <!-- Customer Details -->
+                <div class="customer-details">
+                    <label for="customer-name">Name (Optional):</label>
+                    <input type="text" id="customer-name" placeholder="Enter your name">
+
+                    <label for="customer-phone"><strong>Phone Number (Required):</strong></label>
+                    <input type="text" id="customer-phone" placeholder="Enter 10-digit phone number" required>
+                </div>
+
+                <button id="checkoutBtn" onclick="checkout()">Checkout</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ✅ Firebase & JavaScript -->
+    
+
+    <script type="module" src="script.js"></script>
+
+</body>
+</html>

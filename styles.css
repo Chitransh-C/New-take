@@ -1,0 +1,387 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff8dc;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #ffd700;
+    color: black;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+}
+
+/* Staff Login Button */
+.staff-login-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 15px;
+    background: #FFD700;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.staff-login-btn:hover {
+    background: #ffcc00;
+}
+
+/* ✅ Category Navigation - Arrange Horizontally */
+#categoryNav {
+    display: flex;
+    justify-content: center; /* Center align */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 10px; /* Add spacing between buttons */
+    padding: 10px;
+    list-style: none;
+}
+
+/* ✅ Style for Category Buttons */
+#categoryNav button {
+    background-color: #ffcc00;
+    border: none;
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+/* ✅ Hover Effect */
+#categoryNav button:hover {
+    background-color: #ffaa00;
+}
+
+/* Navigation Bar */
+nav ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 5px;
+}
+
+nav button {
+    background-color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #ffec80;
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Menu Section */
+#menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Menu Items */
+.menu-item {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ffd700;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.menu-item h3 {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.menu-item p {
+    margin: 5px 0;
+}
+
+.menu-item button {
+    background-color: #ffd700;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu-item button:hover {
+    background-color: #ffec80;
+}
+
+/* Cart Section */
+#cart {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#cart h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.cart-total {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+/* ✅ Customer Details Input Fields */
+.customer-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.customer-details input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    background: #fff;
+}
+
+/* ✅ Input Field Focus Effect */
+.customer-details input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* ✅ Labels for Input Fields */
+.customer-details label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* ✅ Checkout Button */
+#checkoutBtn {
+    background: #E67E22;
+    color: white;
+    font-size: 18px;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+/* ✅ Hover Effect for Checkout Button */
+#checkoutBtn:hover {
+    background: #218838;
+}
+
+/* Responsive Design for Tablets */
+@media (max-width: 768px) {
+    #cart {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    #cartItems li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-remove-btn {
+        margin-top: 5px;
+    }
+
+    /* Center the navigation */
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav button {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+
+    #categoryNav {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    #categoryNav button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+/* Responsive Design for Mobile Devices */
+@media (max-width: 480px) {
+    header {
+        text-align: center;
+        padding: 10px;
+    }
+
+    .staff-login-btn {
+        position: static;
+        display: block;
+        margin: 10px auto;
+    }
+
+    #cart {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .customer-details input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #checkoutBtn {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* Adjust menu layout for smaller screens */
+    #menu {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+    }
+
+    .menu-item h3 {
+        font-size: 16px;
+    }
+
+    .menu-item button {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    /* Keep category buttons aligned properly */
+    #categoryNav {
+        flex-direction: row;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    #categoryNav button {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+#cartItems li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd; /* Subtle separator */
+}
+
+#cartItems button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#cartItems button:hover {
+    opacity: 0.7;
+}
+/* ✅ General Cart Button Styling with Better Spacing */
+.cart-btn {
+    border: black;
+    background: #ddd;
+    cursor: pointer;
+    padding: 5px 10px;  /* Increased padding for better spacing */
+    border-radius: 5px;
+    font-size: 14px;
+    
+}
+
+/* ✅ Updated Quantity Container for Spacing */
+/* ✅ Quantity Container with Increased Spacing */
+.quantity-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;  /* Increased spacing between + and - buttons */
+    margin-right: 20px; /* Added spacing between quantity controls and bin icon */
+}
+
+/* ✅ Bin Button Styling */
+.bin-btn {
+    background: transparent;
+    border: none;
+    font-size: 18px; /* Slightly bigger for better visibility */
+    cursor: pointer;
+    color: grey;
+}
+
+/* ✅ Responsive Adjustments */
+@media (max-width: 600px) {
+    .cart-btn {
+        font-size: 12px;  
+        padding: 6px 10px;  /* Adjusted for small screens */
+    }
+
+    .bin-btn {
+        font-size: 16px;  /* Slightly bigger for better touch experience */
+    }
+
+    #cartItems li {
+        padding: 10px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .quantity-container {
+        gap: 12px;  /* More spacing for smaller screens */
+        margin-right: 15px; /* Adjust spacing before bin */
+    }
+}
+
+#whatsapp-notice {
+    color: #4caf50;
+    font-size: 14px;
+    border-radius: 5px;
+}
+#whatsapp-notice a {
+    color: #388e3c;
+    text-decoration: underline;
+}
