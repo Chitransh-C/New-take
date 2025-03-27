@@ -84,6 +84,9 @@ async function updateOrderStatus(orderId, newStatus) {
 
         const orderData = orderSnap.data();
         const customerPhone = orderData.phone; // ✅ Get phone number from Firestore
+        if (customerPhone && !customerPhone.startsWith("+")) {
+    customerPhone = "+91" + customerPhone;
+}
 
         if (!customerPhone) {
             console.error("❌ Missing customer phone number");
