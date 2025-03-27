@@ -1,3 +1,5 @@
+import { Buffer } from "buffer";
+
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
 
