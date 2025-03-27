@@ -281,11 +281,11 @@ window.checkout = checkout;
 
 // ✅ Checkout (Saves Order to Firestore)
 async function checkout() {
-    let customerName = document.getElementById("customer-name").value.trim();
-    let customerPhone = document.getElementById("customer-phone").value.trim();
-    let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const customerName = document.getElementById("customer-name").value.trim() || "Guest";
+    const customerPhone = document.getElementById("customer-phone").value.trim();
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (!customerPhone.match(/^\d{10}$/)) {
+    if (!/^\d{10}$/.test(customerPhone)) {
         alert("Please enter a valid 10-digit phone number.");
         return;
     }
@@ -295,68 +295,64 @@ async function checkout() {
         return;
     }
 
-    // ✅ Get Current Date Details
+    if (!db) {
+        alert("Firestore is not initialized. Please try again later.");
+        return;
+    }
+
+    // Get current date in DDMMYY format
     const now = new Date();
-    const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-    const month = months[now.getMonth()];
-    const date = now.getDate().toString().padStart(2, "0");
-    const year = now.getFullYear().toString().slice(-2);
+    const dateStr = now.toLocaleDateString("en-GB").replace(/\//g, "").slice(0, 6); // DDMMYY
 
     try {
-        // ✅ Check Firestore for last used number today
-        if (!db) {
-    alert("Firestore is not initialized. Please try again later.");
-    return;
-}
-const orderCounterRef = doc(db, "orderCounters", `${month}${date}${year}`);
-
+        // Fetch last used order number from Firestore
+        const orderCounterRef = doc(db, "orderCounters", dateStr);
         const orderCounterSnap = await getDoc(orderCounterRef);
-        let lastNumber = orderCounterSnap.exists() ? orderCounterSnap.data().lastUsedNumber : 1000;
+        const lastNumber = orderCounterSnap.exists() ? orderCounterSnap.data().lastUsedNumber : 1000;
 
-        // ✅ Generate Next Unique Order Number for Today
-        let uniqueNumber = lastNumber + 1;
-        let orderId = `ORD${month}${date}${year}${uniqueNumber}`;
+        // Generate new order ID
+        const uniqueNumber = lastNumber + 1;
+        const orderId = `ORD${dateStr}${uniqueNumber}`;
 
-        // ✅ Save the updated last used number in Firestore
+        // Update Firestore with the latest order number
         await setDoc(orderCounterRef, { lastUsedNumber: uniqueNumber });
 
-        // ✅ Save order to Firestore with custom Order ID
+        // Save order details in Firestore
         await addDoc(collection(db, "orders"), {
-            orderId: orderId,
-            customer: customerName || "Guest",
+            orderId,
+            customer: customerName,
             phone: customerPhone,
             items: cartItems,
             status: "New",
             timestamp: serverTimestamp()
         });
-        console.log('✅ Order saved to Firestore. Calling sendOrderConfirmation...');
-//alert('Order placed! Sending WhatsApp confirmation...');
 
-// ✅ Call WhatsApp Confirmation Function
-await sendOrderConfirmation(orderId, customerPhone);
+        console.log('✅ Order saved to Firestore. Sending WhatsApp confirmation...');
+        
+        // Send WhatsApp confirmation
+        await sendOrderConfirmation(orderId, customerPhone);
 
-        // ✅ Show the custom Order ID to the user
+        // Notify user & clear cart
         alert(`Order placed successfully! 🎉\nYour Order ID: ${orderId}`);
-
-        // ✅ Clear cart after checkout
-        localStorage.removeItem("cart");
-        document.getElementById("cartItems").innerHTML = "";
-        document.getElementById("cartTotal").textContent = "0";
-        document.getElementById("customer-name").value = "";
-        document.getElementById("customer-phone").value = "";
+        clearCart();
     } catch (error) {
-        console.error("Error adding order: ", error);
-        alert("Something went wrong.");
+        console.error("Error processing order:", error);
+        alert("Something went wrong. Please try again.");
     }
 }
 
-// ✅ Test Firestore Connection
+// Helper function to clear cart and reset UI
+function clearCart() {
+    localStorage.removeItem("cart");
+    document.getElementById("cartItems").innerHTML = "";
+    document.getElementById("cartTotal").textContent = "0";
+    document.getElementById("customer-name").value = "";
+    document.getElementById("customer-phone").value = "";
+}
 
-
-// ✅ Send WhatsApp Confirmation After Order is Placed
-// ✅ Send WhatsApp Confirmation After Order is Placed
+// Send WhatsApp Confirmation
 async function sendOrderConfirmation(orderId, customerPhone) {
-    console.log("✅ Inside sendOrderConfirmation() function.");
+    console.log("✅ Sending WhatsApp confirmation...");
 
     if (!customerPhone.startsWith("+")) {
         customerPhone = `+91${customerPhone}`;
@@ -365,24 +361,20 @@ async function sendOrderConfirmation(orderId, customerPhone) {
     try {
         const response = await fetch('/api/sendMessage', {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ orderId, customerPhone })
         });
 
         const result = await response.json();
-        if (response.ok) {
-            console.log("✅ WhatsApp message sent successfully.");
-        } else {
-            console.error("❌ Failed to send WhatsApp message:", result.error);
-            alert(`Failed to send WhatsApp confirmation: ${result.error}`);
-        }
+        if (!response.ok) throw new Error(result.error || "Unknown error");
+
+        console.log("✅ WhatsApp message sent successfully.");
     } catch (error) {
-        console.error("❌ Error sending WhatsApp message:", error);
-        alert(`Error sending WhatsApp message: ${error.message}`);
+        console.error("❌ WhatsApp message error:", error);
+        alert(`Error sending WhatsApp confirmation: ${error.message}`);
     }
 }
+
 (async function testFirestoreConnection() {
     try {
         if (!db) {
