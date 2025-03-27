@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
     const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
     const data = new URLSearchParams({
-        From: `whatsapp:${twilioPhone}`,
+        From: `${twilioPhone}`,
         To: `whatsapp:${customerPhone}`,
         Body: message
     });
