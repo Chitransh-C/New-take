@@ -73,6 +73,26 @@ function fetchOrders() {
 // Function to update order status in Firestore and notify customer
 async function updateOrderStatus(orderId, newStatus) {
     try {
+    const orderRef = doc(db, "orders", orderId);
+        const orderSnap = await getDoc(orderRef);
+
+        if (!orderSnap.exists()) {
+            console.error("❌ Order not found:", orderId);
+            alert("Order not found");
+            return;
+        }
+
+        const orderData = orderSnap.data();
+        const customerPhone = orderData.customerPhone; // ✅ Get phone number from Firestore
+
+        if (!customerPhone) {
+            console.error("❌ Missing customer phone number");
+            alert("Customer phone number not available.");
+            return;
+        }
+
+    
+    
         const response = await fetch('/api/updateOrder', {
             method: "POST",
             headers: { "Content-Type": "application/json" },
