@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-app.js";
 import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.3.1/firebase-firestore.js";
 
@@ -11,26 +12,20 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // ✅ Initialize Firebase
-    const firebaseConfig = {
-        apiKey: process.env.FIREBASE_API_KEY,
-        authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-        messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-        appId: process.env.FIREBASE_APP_ID
-    };
-    
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
     try {
-        // ✅ 1. Update Order Status in Firestore
+        // ✅ Fetch Firebase Config
+        const firebaseConfig = await fetchFirebaseConfig();
+        
+        // ✅ Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ✅ Update Order Status in Firestore
         const orderRef = doc(db, "orders", orderId);
         await updateDoc(orderRef, { status: status });
         console.log(`✅ Order ${orderId} status updated to: ${status}`);
 
-        // ✅ 2. Send WhatsApp Notification
+        // ✅ Send WhatsApp Notification
         await sendWhatsAppMessage(orderId, status, customerPhone);
 
         return res.status(200).json({ success: true, message: "Order updated successfully" });
@@ -38,6 +33,14 @@ export default async function handler(req, res) {
         console.error("❌ Error updating order:", error);
         return res.status(500).json({ error: error.message });
     }
+}
+// ✅ Function to Fetch Firebase Config
+async function fetchFirebaseConfig() {
+    const response = await fetch('/api/getFirebaseConfig'); // Update this endpoint if needed
+    if (!response.ok) {
+        throw new Error("Failed to fetch Firebase configuration");
+    }
+    return response.json();
 }
 
 // ✅ Function to Send WhatsApp Message via Twilio
