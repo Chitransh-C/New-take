@@ -110,7 +110,7 @@ async function updateOrderStatus(orderId, newStatus) {
         }
     } catch (error) {
         console.error("❌ Error updating order:", error);
-        alert(`Error: ${error.message}`);
+        alert(`Error updating order: ${error}`); 
     }
 }
 
